@@ -5,7 +5,7 @@ import io.restassured.RestAssured;
 
 public class ApiBaseTest {
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void setupApi() {
         RestAssured.baseURI = "https://dummyjson.com";
     }
