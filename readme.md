@@ -35,30 +35,32 @@ The goal of this project is to serve as a **professional portfolio** and a solid
 
 3 Project Structure
 
-src
-├── main
-│ └── java
-│ └── (reserved for future shared utilities)
+ui-api-selenium-framework/
 │
-└── test
-└── java
-├── api
-│ ├── base
-│ │ └── ApiBaseTest.java
-│ ├── pojo
-│ │ └── User.java
-│ └── test
-│ └── UserApiTest.java
+├── src/
+│   └── test/
+│       └── java/
+│           ├── api/
+│           │   ├── base/
+│           │   │   └── ApiBaseTest.java
+│           │   ├── pojo/
+│           │   │   └── User.java
+│           │   └── test/
+│           │       └── UserApiTest.java
+│           │
+│           └── ui/
+│               ├── base/
+│               │   └── BaseTest.java
+│               ├── pages/
+│               │   ├── GooglePage.java
+│               │   └── LoginPage.java
+│               └── tests/
+│                   ├── FirstTest.java
+│                   └── LoginTest.java
 │
-└── ui
-├── base
-│ └── BaseTest.java
-├── pages
-│ ├── GooglePage.java
-│ └── LoginPage.java
-└── tests
-├── FirstTest.java
-└── LoginTest.java
+├── pom.xml
+├── .gitignore
+└── README.md
 
 4 UI Automation Layer
 - base 
