@@ -64,7 +64,7 @@ ui-api-selenium-framework/
 ├── pom.xml
 ├── .gitignore
 └── README.md
-
+```
 4 UI Automation Layer
 - base 
   WebDriver configuration and lifecycle management.
