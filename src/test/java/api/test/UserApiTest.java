@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.*;
 
 public class UserApiTest extends ApiBaseTest {
 
-    @Test
+    @Test (groups = "api")
     public void createUser_shouldReturnId() {
 
         User user = new User(
@@ -34,7 +34,7 @@ public class UserApiTest extends ApiBaseTest {
                 .body("username", equalTo("lrojas"));
     }
 
-    @Test
+    @Test (groups = "api")
     public void getUser_shouldReturnUserData() {
 
         int existingUserId = 1;
@@ -50,7 +50,7 @@ public class UserApiTest extends ApiBaseTest {
             .body("phone", not(emptyString()));
     }
 
-    @Test
+    @Test (groups = "api")
     public void updateUser_shouldUpdatePhone() {
 
         int existingUserId = 1;
@@ -73,7 +73,7 @@ public class UserApiTest extends ApiBaseTest {
             .body("phone", equalTo("999999999"));
     }
 
-    @Test
+    @Test (groups = "api")
     public void deleteUser_shouldDeleteUser() {
 
         int existingUserId = 1;

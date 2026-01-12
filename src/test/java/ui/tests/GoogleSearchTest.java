@@ -8,7 +8,7 @@ import ui.pages.GooglePage;
 
 public class GoogleSearchTest extends BaseTest {
 
-    @Test
+    @Test (groups = "ui")
     public void search_shouldDisplayResults() {
 
         // Arrange

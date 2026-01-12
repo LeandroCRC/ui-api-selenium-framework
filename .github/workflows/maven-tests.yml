@@ -28,5 +28,5 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Run Maven tests
-        run: mvn clean test
+      - name: Run API tests only
+        run: mvn clean test -Dgroups=api

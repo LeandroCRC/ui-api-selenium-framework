@@ -8,7 +8,7 @@ import ui.pages.LoginPage;
 
 public class LoginTest extends BaseTest {
 
-    @Test
+    @Test (groups = "ui")
     public void loginWithInvalidCredentials_shouldShowErrorAndRemainOnLoginPage() {
 
         // Arrange
