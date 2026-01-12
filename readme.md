@@ -35,6 +35,9 @@ The goal of this project is to serve as a **professional portfolio** and a solid
 
 3 Project Structure
 
+## Project Structure
+
+```text
 ui-api-selenium-framework/
 │
 ├── src/
@@ -61,7 +64,7 @@ ui-api-selenium-framework/
 ├── pom.xml
 ├── .gitignore
 └── README.md
-
+```
 4 UI Automation Layer
 - base 
   WebDriver configuration and lifecycle management.
