@@ -35,6 +35,9 @@ The goal of this project is to serve as a **professional portfolio** and a solid
 
 3 Project Structure
 
+## Project Structure
+
+```text
 ui-api-selenium-framework/
 │
 ├── src/
