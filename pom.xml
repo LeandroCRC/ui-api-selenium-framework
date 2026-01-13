@@ -42,6 +42,22 @@
         <version>7.9.0</version>
         <scope>test</scope>
     </dependency>
+    
+    
+
+	<!-- Allure TestNG -->
+	<dependency>
+	    <groupId>io.qameta.allure</groupId>
+	    <artifactId>allure-testng</artifactId>
+	    <version>2.25.0</version>
+	</dependency>
+	
+	<!-- RestAssured Allure integration -->
+	<dependency>
+	    <groupId>io.qameta.allure</groupId>
+	    <artifactId>allure-rest-assured</artifactId>
+	    <version>2.25.0</version>
+	</dependency>
 
     <!-- WebDriverManager -->
     <dependency>

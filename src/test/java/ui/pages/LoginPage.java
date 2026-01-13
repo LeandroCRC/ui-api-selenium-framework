@@ -1,51 +1,55 @@
 package ui.pages;
 
+import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage {
 
-	// 1️⃣ ATRIBUTOS
-	private WebDriver driver;
+    private WebDriver driver;
+    private WebDriverWait wait;
 
-	// 2️⃣ LOCATORS
-	By usernameInput = By.id("username");
-	By passwordInput = By.id("password");
-	By loginButton = By.cssSelector("button[type='submit']");
-	By errorMessage = By.id("flash");
-	
+    private By usernameInput = By.id("username");
+    private By passwordInput = By.id("password");
+    private By loginButton = By.cssSelector("button[type='submit']");
+    private By errorMessage = By.id("flash");
 
-	// 3️⃣ CONSTRUCTOR
-	public LoginPage(WebDriver driver) {
-	    this.driver = driver;
-	}
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    }
 
-	// 4️⃣ ACCIONES
-	public void open() {
-	    driver.get("https://the-internet.herokuapp.com/login");
-	}
+    public void open() {
+        driver.get("https://the-internet.herokuapp.com/login");
+    }
 
-	public void login(String username, String password) {
-	    driver.findElement(usernameInput).sendKeys(username);
-	    driver.findElement(passwordInput).sendKeys(password);
-	    driver.findElement(loginButton).click();
-	}
+    public void login(String username, String password) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameInput))
+            .sendKeys(username);
+        driver.findElement(passwordInput).sendKeys(password);
+        driver.findElement(loginButton).click();
+    }
 
-	// 5️⃣ CONSULTAS
-	public boolean isErrorMessageVisible() {
-	    return driver.findElement(errorMessage).isDisplayed();
-	}
+    public boolean isErrorMessageVisible() {
+        return wait.until(
+            ExpectedConditions.visibilityOfElementLocated(errorMessage)
+        ).isDisplayed();
+    }
 
-	public String getCurrentUrl() {
-	    return driver.getCurrentUrl();
-	}
+    public String getCurrentUrl() {
+        return driver.getCurrentUrl();
+    }
 
-	public String getErrorMessageText() {
-	    return driver.findElement(errorMessage).getText();
-	}
-	
-	public boolean isOnLoginPage() {
-	    return driver.findElement(loginButton).isDisplayed();
-	}
+    public String getErrorMessageText() {
+        return driver.findElement(errorMessage).getText();
+    }
 
+    public boolean isOnLoginPage() {
+        return wait.until(
+            ExpectedConditions.visibilityOfElementLocated(loginButton)
+        ).isDisplayed();
+    }
 }
+

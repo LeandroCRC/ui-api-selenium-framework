@@ -1,12 +1,25 @@
 package api.base;
 
-import org.testng.annotations.BeforeClass;
+import api.utils.AllureUtils;
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import org.testng.annotations.BeforeClass;
 
 public class ApiBaseTest {
 
-    @BeforeClass(alwaysRun = true)
-    public void setupApi() {
+    @BeforeClass
+    public void setup() {
         RestAssured.baseURI = "https://dummyjson.com";
+    }
+
+    protected void attachToAllure(Response response, Object requestBody) {
+
+        if (requestBody != null) {
+            AllureUtils.attachRequest(requestBody.toString());
+        }
+
+        if (response != null) {
+            AllureUtils.attachResponse(response.getBody().asPrettyString());
+        }
     }
 }

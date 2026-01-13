@@ -1,10 +1,14 @@
 package ui.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import ui.base.BaseTest;
+import ui.listeners.UiTestListener;
 import ui.pages.LoginPage;
+
+@Listeners(UiTestListener.class)
 
 public class LoginTest extends BaseTest {
 
