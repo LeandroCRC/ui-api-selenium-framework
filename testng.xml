@@ -1,0 +1,20 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Automation Test Suite">
+
+    <listeners>
+        <listener class-name="api.base.TestSuiteSetup"/>
+    </listeners>
+
+    <test name="API Tests">
+        <groups>
+            <run>
+                <include name="api"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="api.test"/>
+        </packages>
+    </test>
+
+</suite>

@@ -1,107 +1,43 @@
 package ui.pages;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.WebElement;
-
 
 public class GooglePage {
 
-    // =========================
-    // 1️⃣ ATRIBUTOS (ESTADO)
-    // =========================
-    // Cosas que la página necesita para funcionar
+    private final WebDriver driver;
+    private final WebDriverWait wait;
 
-    private WebDriver driver;
-
-    // =========================
-    // 2️⃣ LOCATORS
-    // =========================
-    // Representan elementos del UI
-    // NO hacen acciones
-    // Solo describen "dónde está" algo
-
-    private By searchInput = By.name("q");
-    private By resultsList = By.cssSelector("div.g");
-    
-    // =========================
-    // 3️⃣ CONSTRUCTOR
-    // =========================
-    // Inicializa la página con el navegador
+    private final By searchBox = By.name("q");
+    private final By results = By.cssSelector("div#search h3");
 
     public GooglePage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
-
-    // =========================
-    // 4️⃣ ACCIONES DEL USUARIO
-    // =========================
-    // Métodos void
-    // Representan cosas que haría una persona
 
     public void open() {
         driver.get("https://www.google.com");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(searchBox));
     }
 
     public void search(String text) {
-        WebElement input = getSearchInputWhenReady();
+        WebElement input = driver.findElement(searchBox);
         input.clear();
         input.sendKeys(text);
-        input.submit();
-    }
-
-
-    // =========================
-    // 5️⃣ CONSULTAS / ESTADO
-    // =========================
-    // Métodos que RESPONDEN preguntas
-    // Devuelven datos (boolean, String, int)
-    // NO contienen asserts
-
-    public String getPageTitle() {
-        return driver.getTitle();
-    }
-
-    public String getCurrentUrl() {
-        return driver.getCurrentUrl();
-    }
-
-    public boolean isOnResultsPage() {
-        return getWait().until(driver -> !driver.getTitle().isEmpty());
+        input.sendKeys(Keys.ENTER);
     }
 
     public boolean hasResults() {
-        return getWait().until(driver ->
-            driver.findElements(resultsList).size() > 0
-        );
+        List<WebElement> elements =
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(results));
+        return !elements.isEmpty();
     }
-
-
-
-    // =========================
-    // 6️⃣ WAITS (UTILIDADES INTERNAS)
-    // =========================
-    // Métodos de soporte
-    // No se usan desde el test
-    // Ayudan a que las acciones sean estables
-
-  
-    
-    private WebElement getSearchInputWhenReady() {
-        return getWait().until(
-            ExpectedConditions.visibilityOfElementLocated(searchInput)
-        );
-    }
-    
-    private WebDriverWait getWait() {
-        return new WebDriverWait(driver, Duration.ofSeconds(10));
-    }
-
-
 }
-
-

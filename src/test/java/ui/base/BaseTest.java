@@ -14,17 +14,19 @@ public class BaseTest {
         return driver;
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
 
         ChromeOptions options = new ChromeOptions();
 
-        // Headless automático si estamos en CI
+        // Headless automático en CI (GitHub Actions)
         if (System.getenv("CI") != null) {
             options.addArguments("--headless=new");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-gpu");
             options.addArguments("--window-size=1920,1080");
+            options.addArguments("--remote-allow-origins=*");
         }
 
         driver = new ChromeDriver(options);

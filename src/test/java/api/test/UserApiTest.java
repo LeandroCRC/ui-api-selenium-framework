@@ -20,14 +20,17 @@ public class UserApiTest extends ApiBaseTest {
     @Test(groups = "api")
     @Story("Create user")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Creates a new user and validates that the user is created correctly")
+    @Description("Creates a new user and validates response contract")
     public void createUser_shouldReturnId() {
 
         User user = buildUser("Leandro", "lrojas", "leandro@test.com", "123456789");
 
         Response response = createUser(user);
 
-        validateUserCreation(response);
+        response.then()
+                .statusCode(201) // 201 porque así lo definimos en el stub
+                .body("id", notNullValue())
+                .body("username", equalTo("lrojas"));
     }
 
     @Test(groups = "api")
@@ -36,12 +39,10 @@ public class UserApiTest extends ApiBaseTest {
     @Description("Retrieves an existing user and validates returned data")
     public void getUser_shouldReturnUserData() {
 
-        int existingUserId = 1;
-
-        getUser(existingUserId)
+        getUser(1)
                 .then()
                 .statusCode(200)
-                .body("id", equalTo(existingUserId))
+                .body("id", equalTo(1))
                 .body("username", not(emptyString()))
                 .body("email", not(emptyString()))
                 .body("phone", not(emptyString()));
@@ -50,38 +51,34 @@ public class UserApiTest extends ApiBaseTest {
     @Test(groups = "api")
     @Story("Update user")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Updates user phone number and validates the change")
-    public void updateUser_shouldUpdatePhone() {
-
-        int existingUserId = 1;
+    @Description("Updates user and validates response structure")
+    public void updateUser_shouldReturnUpdatedUser() {
 
         User updatedUser =
                 buildUser("Leandro", "lrojas", "leandro@test.com", "999999999");
 
-        updateUser(existingUserId, updatedUser)
+        updateUser(1, updatedUser)
                 .then()
-                .statusCode(200)
-                .body("id", equalTo(existingUserId))
+                .statusCode(200) // Stub devuelve 200 en PUT
+                .body("id", equalTo(1))
                 .body("phone", equalTo("999999999"));
     }
 
     @Test(groups = "api")
     @Story("Delete user")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Deletes an existing user and validates deletion flag")
-    public void deleteUser_shouldDeleteUser() {
+    @Description("Deletes user and validates response")
+    public void deleteUser_shouldReturnSuccessResponse() {
 
-        int existingUserId = 1;
-
-        deleteUser(existingUserId)
+        deleteUser(1)
                 .then()
-                .statusCode(200)
-                .body("id", equalTo(existingUserId))
+                .statusCode(200) // Stub devuelve 200 en DELETE
+                .body("id", equalTo(1))
                 .body("isDeleted", equalTo(true));
     }
 
     /* =======================
-       STEPS / HELPERS
+       HELPERS
        ======================= */
 
     @Step("Build user object")
@@ -89,8 +86,10 @@ public class UserApiTest extends ApiBaseTest {
         return new User(name, username, email, phone);
     }
 
-    @Step("Create user via POST /users/add")
+    @Step("POST /users/add")
     private Response createUser(User user) {
+
+        System.out.println("[API TEST] POST /users/add");
 
         Response response =
                 given()
@@ -103,16 +102,10 @@ public class UserApiTest extends ApiBaseTest {
         return response;
     }
 
-    @Step("Validate user creation response")
-    private void validateUserCreation(Response response) {
-        response.then()
-                .statusCode(201)
-                .body("id", notNullValue())
-                .body("username", equalTo("lrojas"));
-    }
-
-    @Step("Get user with ID: {userId}")
+    @Step("GET /users/{id}")
     private Response getUser(int userId) {
+
+        System.out.println("[API TEST] GET /users/" + userId);
 
         Response response =
                 given()
@@ -123,8 +116,10 @@ public class UserApiTest extends ApiBaseTest {
         return response;
     }
 
-    @Step("Update user with ID: {userId}")
+    @Step("PUT /users/{id}")
     private Response updateUser(int userId, User user) {
+
+        System.out.println("[API TEST] PUT /users/" + userId);
 
         Response response =
                 given()
@@ -137,8 +132,10 @@ public class UserApiTest extends ApiBaseTest {
         return response;
     }
 
-    @Step("Delete user with ID: {userId}")
+    @Step("DELETE /users/{id}")
     private Response deleteUser(int userId) {
+
+        System.out.println("[API TEST] DELETE /users/" + userId);
 
         Response response =
                 given()
@@ -149,5 +146,4 @@ public class UserApiTest extends ApiBaseTest {
         return response;
     }
 }
-
 
