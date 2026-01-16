@@ -1,15 +1,14 @@
 package api.test;
 
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
-
 import api.base.ApiBaseTest;
 import api.pojo.User;
 import io.qameta.allure.*;
 import io.qameta.allure.testng.AllureTestNg;
 import io.restassured.response.Response;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 @Listeners(AllureTestNg.class)
@@ -28,7 +27,7 @@ public class UserApiTest extends ApiBaseTest {
         Response response = createUser(user);
 
         response.then()
-                .statusCode(201) // 201 porque así lo definimos en el stub
+                .statusCode(201)
                 .body("id", notNullValue())
                 .body("username", equalTo("lrojas"));
     }
@@ -39,8 +38,9 @@ public class UserApiTest extends ApiBaseTest {
     @Description("Retrieves an existing user and validates returned data")
     public void getUser_shouldReturnUserData() {
 
-        getUser(1)
-                .then()
+        Response response = getUser(1);
+
+        response.then()
                 .statusCode(200)
                 .body("id", equalTo(1))
                 .body("username", not(emptyString()))
@@ -57,9 +57,10 @@ public class UserApiTest extends ApiBaseTest {
         User updatedUser =
                 buildUser("Leandro", "lrojas", "leandro@test.com", "999999999");
 
-        updateUser(1, updatedUser)
-                .then()
-                .statusCode(200) // Stub devuelve 200 en PUT
+        Response response = updateUser(1, updatedUser);
+
+        response.then()
+                .statusCode(200)
                 .body("id", equalTo(1))
                 .body("phone", equalTo("999999999"));
     }
@@ -70,9 +71,10 @@ public class UserApiTest extends ApiBaseTest {
     @Description("Deletes user and validates response")
     public void deleteUser_shouldReturnSuccessResponse() {
 
-        deleteUser(1)
-                .then()
-                .statusCode(200) // Stub devuelve 200 en DELETE
+        Response response = deleteUser(1);
+
+        response.then()
+                .statusCode(200)
                 .body("id", equalTo(1))
                 .body("isDeleted", equalTo(true));
     }
@@ -89,10 +91,9 @@ public class UserApiTest extends ApiBaseTest {
     @Step("POST /users/add")
     private Response createUser(User user) {
 
-        System.out.println("[API TEST] POST /users/add");
-
         Response response =
                 given()
+                        .baseUri(getApiBaseUrl())
                         .contentType("application/json")
                         .body(user)
                 .when()
@@ -105,10 +106,9 @@ public class UserApiTest extends ApiBaseTest {
     @Step("GET /users/{id}")
     private Response getUser(int userId) {
 
-        System.out.println("[API TEST] GET /users/" + userId);
-
         Response response =
                 given()
+                        .baseUri(getApiBaseUrl())
                 .when()
                         .get("/users/" + userId);
 
@@ -119,10 +119,9 @@ public class UserApiTest extends ApiBaseTest {
     @Step("PUT /users/{id}")
     private Response updateUser(int userId, User user) {
 
-        System.out.println("[API TEST] PUT /users/" + userId);
-
         Response response =
                 given()
+                        .baseUri(getApiBaseUrl())
                         .contentType("application/json")
                         .body(user)
                 .when()
@@ -135,10 +134,9 @@ public class UserApiTest extends ApiBaseTest {
     @Step("DELETE /users/{id}")
     private Response deleteUser(int userId) {
 
-        System.out.println("[API TEST] DELETE /users/" + userId);
-
         Response response =
                 given()
+                        .baseUri(getApiBaseUrl())
                 .when()
                         .delete("/users/" + userId);
 

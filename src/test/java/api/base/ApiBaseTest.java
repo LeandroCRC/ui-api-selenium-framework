@@ -2,7 +2,6 @@ package api.base;
 
 import api.mock.WireMockServerManager;
 import api.utils.AllureUtils;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -10,18 +9,17 @@ import org.testng.annotations.BeforeClass;
 public class ApiBaseTest {
 
     @BeforeClass
-    public void setup() {
-        // Levantamos WireMock solo para los tests de API
+    public void apiSetUp() {
         WireMockServerManager.startServer();
-
-        RestAssured.baseURI = "http://localhost:8089";
-        System.out.println("[API TEST] Base URI configurada a: " + RestAssured.baseURI);
     }
 
     @AfterClass(alwaysRun = true)
-    public void tearDown() {
-        // Apagamos WireMock al finalizar la suite de API
+    public void apiTearDown() {
         WireMockServerManager.stopServer();
+    }
+
+    protected String getApiBaseUrl() {
+        return WireMockServerManager.getBaseUrl();
     }
 
     protected void attachToAllure(Response response, Object requestBody) {
