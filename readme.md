@@ -1,148 +1,223 @@
- **UI & API Automation Framework – Selenium + RestAssured**
+# UI & API Automation Framework  
+Selenium WebDriver + RestAssured + TestNG + WireMock + GitHub Actions + Allure
 
-This repository contains a **test automation framework** developed in **Java**, covering both **UI automation** (Selenium WebDriver) and **API automation** (RestAssured).  
-The project follows **industry-standard best practices** and is structured to reflect how automation frameworks are built and maintained in real professional environments.
+This repository contains a fully functional end-to-end automation framework built in Java.  
+It includes:
 
----
+- UI test automation using Selenium WebDriver
+- API test automation using RestAssured
+- Mocked backend services using WireMock  
+- CI/CD pipelines using GitHub Actions (separate UI + API workflows)
+- Allure reporting exported as downloadable artifacts  
+- Clean, scalable framework architecture, aligned with industry best practices  
 
-1 Project Overview
-
-This framework was created to demonstrate:
-
-- Web UI automation using Selenium WebDriver
-- REST API automation using RestAssured
-- Clean separation between UI and API layers
-- Scalable and maintainable architecture
-- Proper use of Page Object Model (POM)
-- Test design aligned with real QA Automation roles
-
-The goal of this project is to serve as a **professional portfolio** and a solid base for future expansion.
+This project was designed as a professional portfolio piece to demonstrate real automation engineering capabilities and practical problem-solving relevant to QA Automation roles.
 
 ---
 
-2 Technologies Used
+## 1. Project Objectives
 
-- Java  
-- Maven  
-- Selenium WebDriver  
-- TestNG  
+The framework was created to demonstrate:
+
+- Full-stack QA Automation (UI + API)  
+- Architecture used in real companies  
+- Maintainability and scalability  
+- CI-ready tests (Headless UI + Mocked APIs)  
+- Proper engineering practices:
+  - TestNG groups (api, ui)
+  - Separation of concerns
+  - Reusable utilities
+  - Report generation (Allure)
+  - Dependency management with Maven  
+
+- Handling real-world challenges such as:
+  - Google anti-bot blocking (CAPTCHA)
+  - Non-deterministic external APIs
+  - Tests running reliably inside CI pipelines
+  - Mocking backend responses with WireMock
+
+---
+
+## 2. Technologies Used
+
+### Backend/API
+- Java 17  
 - RestAssured  
-- Hamcrest  
-- Page Object Model (POM)  
-- Git & GitHub  
+- WireMock  
+
+### UI
+- Selenium WebDriver  
+- Chrome Headless (CI)  
+- Explicit Waits  
+- Page Object Model  
+
+### Test Framework
+- TestNG  
+- Maven Surefire  
+
+### Reporting
+- Allure Reports  
+
+### CI/CD
+- GitHub Actions (separate workflows for UI and API)
 
 ---
 
-3 Project Structure
+## 3. Project Structure
 
-## Project Structure
-
-```text
+```
 ui-api-selenium-framework/
 │
-├── src/
-│   └── test/
-│       └── java/
-│           ├── api/
-│           │   ├── base/
-│           │   │   └── ApiBaseTest.java
-│           │   ├── pojo/
-│           │   │   └── User.java
-│           │   └── test/
-│           │       └── UserApiTest.java
-│           │
-│           └── ui/
-│               ├── base/
-│               │   └── BaseTest.java
-│               ├── pages/
-│               │   ├── GooglePage.java
-│               │   └── LoginPage.java
-│               └── tests/
-│                   ├── FirstTest.java
-│                   └── LoginTest.java
+├── src/test/java/
+│   ├── api/
+│   │   ├── base/ApiBaseTest.java
+│   │   ├── mock/WireMockConfig.java
+│   │   ├── pojo/User.java
+│   │   └── test/UserApiTest.java
+│   │   └── utils/AllureUtils.java
+│   └── ui/
+│       ├── base/BaseTest.java
+│       ├── listeners/UiTestListener.java
+│       ├── pages/
+│       │   ├── GooglePage.java
+│       │   └── LoginPage.java
+│       └── tests/
+│           ├── GoogleSearchTest.java
+│           └── LoginTest.java
+│
+├── .github/workflows/
+│   ├── api-tests.yml
+│   └── ui-tests.yml
 │
 ├── pom.xml
-├── .gitignore
 └── README.md
 ```
-4 UI Automation Layer
-- base 
-  WebDriver configuration and lifecycle management.
-
-- pages  
-  Page Object classes containing locators and actions.
-
-- tests  
-  UI test cases that validate user flows and behaviors.
-
-  API Automation Layer
-- base  
-  Base API configuration (base URI, common setup).
-
-- pojo  
-  Plain Old Java Objects used as request bodies.
-
-- test  
-  API test cases validating REST endpoints.
 
 ---
 
-5 UI Automation Details
+## 4. UI Automation Layer
 
-- Selenium WebDriver with Page Object Model
-- Tests contain assertions only (no UI logic)
-- Pages expose behavior, not validations
-- Examples included:
-  - Google search validation
-  - Login attempt with invalid credentials
-  - URL validation after failed login
-  - Error message visibility and content checks
+### BaseTest
+- Starts WebDriver  
+- Auto-headless in CI  
+- Handles lifecycle and cleanup  
 
----
+### Page Objects
+- GooglePage  
+- LoginPage  
 
-6 API Automation Details
+### Tests
+- LoginTest → stable, deterministic  
+- GoogleSearchTest → intentionally fails due to Google anti-bot protection
 
-- REST API testing using RestAssured
-- CRUD coverage:
-  - POST – Create user
-  - GET – Retrieve user
-  - PUT – Update user data
-  - DELETE – Delete user
-- Uses POJOs instead of raw JSON strings
-- Dynamic data handling
-- Validates both status codes and response bodies
+Purpose of Google test:  
+Shows understanding of CAPTCHA limitations and why Google is not a reliable AUT in professional automation.
 
 ---
 
-7 How to Run the Tests
+## 5. API Automation Layer
 
-1. Clone the repository:git clone https://github.com/LeandroCRC/ui-api-selenium-framework.git
-2. Import the project as a **Maven project**.
-3. Run tests using:mvn test
+### WireMock Integration
+Backend endpoints are mocked using WireMock to ensure deterministic and stable API tests.
 
-or directly via TestNG from the IDE.
+Stubs cover:
+- POST `/users/add`
+- GET `/users/1`
+- PUT `/users/1`
+- DELETE `/users/1`
+
+### UserApiTest
+CRUD operations with:
+- Status code validation  
+- Body validation  
+- POJO-based request payloads  
 
 ---
 
-8 Future Improvements
+## 6. GitHub Actions (CI/CD)
 
-- Reporting integration (Allure / Extent)
-- CI/CD with GitHub Actions
-- Environment configuration support
-- Authentication flows
-- Parallel execution
+The project contains **two separate pipelines**:
+
+### api-tests.yml
+- Runs WireMock mock server  
+- Runs only TestNG group `api`  
+- Exports Allure results  
+
+### ui-tests.yml
+- Runs Selenium in headless mode  
+- Runs TestNG group `ui`  
+- Exports Allure reports  
 
 ---
 
-9 Author
+## 7. Allure Reporting
 
-Leandro Rojas  
+Generated automatically on each pipeline run.
+
+To open locally:
+
+```
+allure serve allure-results
+```
+
+Provides:
+- Screenshots  
+- Steps  
+- Request/Response logs  
+- Trend charts  
+
+---
+
+## 8. Real-World Challenge: Google CAPTCHA
+
+Google blocks automated headless browsers.  
+This test intentionally fails to demonstrate:
+
+- Knowledge of anti-bot systems  
+- Debugging skills  
+- Awareness of non-deterministic AUTs  
+- Reason for using controlled demo environments instead  
+
+The stable UI test (LoginTest) validates actual UI automation skills.
+
+---
+
+## 9. Running Tests Locally
+
+### Run all
+```
+mvn clean test
+```
+
+### API only
+```
+mvn clean test -Dgroups=api
+```
+
+### UI only
+```
+mvn clean test -Dgroups=ui
+```
+
+---
+
+## 10. Future Improvements
+
+- Parallel execution  
+- Docker support  
+- Authentication scenarios  
+- Configurable environments  
+- Data factories  
+
+---
+
+## 11. Author  
+**Leandro Rojas**  
 QA Manual & Automation Engineer  
-UI & API Automation – Java
+UI & API Automation – Java  
+GitHub: https://github.com/LeandroCRC
 
 ---
 
- Notes
-
-This project follows **industry-level automation patterns** and is intended for learning, practice, and professional portfolio presentation.
-
+## 12. Notes  
+This project was built to simulate real-company automation work and is intended for recruiter review and portfolio presentation.
