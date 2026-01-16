@@ -1,4 +1,4 @@
-name: UI Tests
+name: API Tests
 
 on:
   push:
@@ -9,11 +9,8 @@ on:
       - main
 
 jobs:
-  ui-tests:
+  api-tests:
     runs-on: ubuntu-latest
-
-    env:
-      CI: 'true'   
 
     steps:
       - name: Checkout repository
@@ -25,5 +22,5 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: "Run UI tests (TestNG group: ui)"  
-        run: mvn clean test -Dgroups=ui
+      - name: "Run API tests (TestNG group: api)"
+        run: mvn clean test -Dgroups=api
