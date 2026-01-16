@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      CI: true´
+      CI: true
 
     steps:
       - name: Checkout repository
@@ -25,13 +25,21 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name:  "Run UI tests (TestNG group: ui)"
-        run: mvn clean test -Dgroups=ui
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            maven-
+
+      - name: "Run UI tests (TestNG group: ui)"
+        run: mvn clean test -Dgroups=ui -Dallure.results.directory=allure-results-ui
 
       - name: Upload Allure results (UI)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-ui
-          path: allure-results
+          path: allure-results-ui
 
