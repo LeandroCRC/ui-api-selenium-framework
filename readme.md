@@ -1,5 +1,10 @@
-# UI & API Automation Framework  
+# UI & API Automation Framework – Selenium + RestAssured
+
+![API Tests](https://github.com/LeandroCRC/ui-api-selenium-framework/actions/workflows/api-tests.yml/badge.svg)
+![UI Tests](https://github.com/LeandroCRC/ui-api-selenium-framework/actions/workflows/ui-tests.yml/badge.svg)
+
 Selenium WebDriver + RestAssured + TestNG + WireMock + GitHub Actions + Allure
+
 
 This repository contains a fully functional end-to-end automation framework built in Java.  
 It includes:
