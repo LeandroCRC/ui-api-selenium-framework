@@ -214,6 +214,8 @@ mvn clean test -Dgroups=ui
 - Configurable environments  
 - Data factories  
 
+
+
 ---
 
 ## 11. Author  
@@ -226,3 +228,61 @@ GitHub: https://github.com/LeandroCRC
 
 ## 12. Notes  
 This project was built to simulate real-company automation work and is intended for recruiter review and portfolio presentation.
+
+---
+
+## How Recruiters Can Review This Project
+
+This repository is structured and configured to reflect real-world automation workflows.  
+To evaluate the project effectively, recruiters and technical reviewers can follow these steps:
+
+### 1. Review CI Pipelines
+The project includes two separate GitHub Actions pipelines:
+
+- **API Tests Pipeline**
+  - Runs REST API tests using RestAssured.
+  - Uses WireMock to mock API responses (no dependency on external services).
+  - Executes CRUD validations: POST, GET, PUT, DELETE.
+  - Generates downloadable Allure reports as artifacts.
+
+- **UI Tests Pipeline**
+  - Executes Selenium Web UI tests in headless mode.
+  - Runs two types of tests:
+    - A stable test against a demo login page (realistic UI automation).
+    - An intentionally failing Google test to demonstrate anti-bot limitations and real-world constraints.
+  - Also publishes Allure reports as artifacts.
+
+Badges at the top of the README show the real-time status of both pipelines.
+
+### 2. Download Allure Reports
+From any workflow run:
+
+1. Open “Actions” in GitHub.
+2. Select **API Tests** or **UI Tests** workflow.
+3. Scroll down to **Artifacts**.
+4. Download `allure-results` to inspect tests visually.
+
+### 3. Browse Code Structure
+Recruiters can inspect:
+
+- `api.test.UserApiTest`  
+  Full CRUD test suite with POJOs and WireMock.
+
+- `ui.tests.LoginTest`  
+  Stable POM UI test verifying login behavior.
+
+- `ui.tests.GoogleSearchTest`  
+  Intentional failing test with documented explanation (Google anti-bot protection).
+
+### 4. Professional Practices Demonstrated
+- Full separation of UI and API layers  
+- Maintainable and scalable structure  
+- CI/CD pipelines with artifact publishing  
+- Mock server usage (WireMock)  
+- Allure reporting integration  
+- Proper TestNG grouping  
+- POM for UI automation  
+- Clean code, readable assertions, modular design
+
+This entire setup reflects practices used in real QA Automation roles and demonstrates readiness for professional environments.
+
