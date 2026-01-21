@@ -17,7 +17,7 @@ public class UiTestListener implements ITestListener {
         if (testClass instanceof BaseTest) {
             WebDriver driver = ((BaseTest) testClass).getDriver();
 
-            // Evitamos NullPointerException si el driver no llegó a inicializarse
+            
             if (driver != null) {
                 saveScreenshot(driver);
             } else {

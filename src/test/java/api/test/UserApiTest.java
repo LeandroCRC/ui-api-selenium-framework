@@ -79,10 +79,6 @@ public class UserApiTest extends ApiBaseTest {
                 .body("isDeleted", equalTo(true));
     }
 
-    /* =======================
-       HELPERS
-       ======================= */
-
     @Step("Build user object")
     private User buildUser(String name, String username, String email, String phone) {
         return new User(name, username, email, phone);

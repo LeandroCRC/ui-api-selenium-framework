@@ -7,7 +7,6 @@ public class User {
     private String email;
     private String phone;
 
-    // Constructor
     public User(String name, String username, String email, String phone) {
         this.name = name;
         this.username = username;
@@ -15,7 +14,7 @@ public class User {
         this.phone = phone;
     }
 
-    // Getters (RestAssured los usa)
+    
     public String getName() {
         return name;
     }
